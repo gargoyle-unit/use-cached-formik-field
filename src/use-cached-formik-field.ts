@@ -13,7 +13,7 @@ export declare type CachedFieldHookConfig<Val = any> = FieldHookConfig<Val> & {
     validate: FieldValidator;
 };
 
-export const useCachedField = <Val = any>(
+export const useCachedFormikField = <Val = any>(
     props: CachedFieldHookConfig<Val>,
     initialValue: any,
     debounceTimeout = 0,
