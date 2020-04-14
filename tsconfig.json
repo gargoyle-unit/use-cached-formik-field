@@ -1,0 +1,20 @@
+{
+  "extends": "./node_modules/gts/tsconfig-google.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "src",
+    "jsx": "react",
+    "noImplicitAny": false,
+    "declaration": true,
+    "sourceMap": false,
+    "lib": ["dom", "es2017"],
+    "typeRoots": ["./node_modules/@types"],
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin"
+      }
+    ]
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "index.d.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/__tests__/**/*.ts", "src/__tests__/**/*.tsx"]
+}
