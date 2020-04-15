@@ -8,11 +8,10 @@
     "commit": "git-cz",
     "build": "tsc",
     "prepare": "install-peers -f",
-    "lint": "gts check",
-    "lint:fix": "gts fix",
-    "test": "NODE_ENV=test jest --runInBand .",
-    "test:coverage": "NODE_ENV=test jest --runInBand . --coverage",
-    "test:snapshot": "NODE_ENV=test jest -u --runInBand ."
+    "lint": "eslint -c eslint.js ./src/**/*.ts ./src/**/*.tsx",
+    "lint:fix": "eslint -c eslint.js ./src/**/*.ts ./src/**/*.tsx --fix",
+    "test": "jest --clearCache; NODE_ENV=test jest  --runInBand .",
+    "test:coverage": "jest --clearCache; NODE_ENV=test jest --runInBand . --coverage"
   },
   "files": [
     "/lib"
@@ -55,10 +54,10 @@
     "eslint-plugin-react": "^7.19.0",
     "gts": "^1.1.2",
     "install-peers-cli": "^2.2.0",
-    "jest": "^25.3.0",
+    "jest": "25.2.1",
     "prettier": "^1.19.1",
     "react-test-renderer": "^16.12.0",
-    "ts-jest": "^24.3.0",
+    "ts-jest": "^25.3.1",
     "typescript": "^3.7.2"
   },
   "config": {

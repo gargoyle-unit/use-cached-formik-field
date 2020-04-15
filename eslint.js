@@ -14,6 +14,7 @@ module.exports = {
         'no-shadow': ['warn', { builtinGlobals: false, hoist: 'functions', allow: [] }],
         'react/prop-types': 'off',
         'react-hooks/exhaustive-deps': 'off',
-        'no-inferrable-types': 'off'
+        'no-inferrable-types': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
     },
 };

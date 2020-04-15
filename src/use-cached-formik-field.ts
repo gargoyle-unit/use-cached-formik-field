@@ -30,13 +30,16 @@ export const useCachedFormikField = <Val = any>(
 
     const validateField = (value: string): string | void | Promise<string | void> => {
         if (value === cachedValue.current) {
-            if (cachedError.current) {
+            console.log('same', cachedError.current);
+            if (!!cachedError.current) {
+                console.log('cached error');
+                console.log('aaaaaaaaa');
                 return cachedError.current;
             }
         } else {
             cachedValue.current = value;
 
-            const promise = new Promise<string | void>((resolve, reject) => {
+            const promise = new Promise<string | void>(resolve => {
                 debounced.current(() => {
                     const result = validate(value);
 
@@ -47,7 +50,7 @@ export const useCachedFormikField = <Val = any>(
                             resolve(resultValue);
                         })
                         .catch(error => {
-                            reject(error);
+                            resolve(error);
                         });
                 });
             });
