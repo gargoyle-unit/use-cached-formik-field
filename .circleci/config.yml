@@ -126,6 +126,9 @@ workflows:
 #            - coverage
       - publish:
           context: usecachedformikfield
+          requires:
+            - lint
+            - coverage
           filters:
             branches:
               only:
