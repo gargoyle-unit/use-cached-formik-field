@@ -110,14 +110,14 @@ workflows:
 #          filters:
 #            tags:
 #              only: /.*/
-#      - lint:
-#          filters:
-#            tags:
-#              only: /.*/
-#      - coverage:
-#          filters:
-#            tags:
-#              only: /.*/
+      - lint:
+          filters:
+            tags:
+              only: /.*/
+      - coverage:
+          filters:
+            tags:
+              only: /.*/
 #      - build:
 #          context: usequery
 #          requires:

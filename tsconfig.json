@@ -16,5 +16,5 @@
     ]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "index.d.ts"],
-  "exclude": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/__tests__/**/*.ts", "src/__tests__/**/*.tsx"]
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/__tests__/**/*.ts", "src/__tests__/**/*.tsx"]
 }
