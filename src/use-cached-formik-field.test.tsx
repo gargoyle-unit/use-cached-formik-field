@@ -241,4 +241,76 @@ describe('the behaviour of useCachedFormikField', () => {
 
         expect(result.current[1].error).toEqual('Validation error');
     });
+
+    it('triggers the initial values change', () => {
+        let initialValue = 'Name';
+
+        const { result, rerender } = renderHook(
+            () => {
+                return useCachedFormikField(
+                    {
+                        name: 'name',
+                        validate: (value: any): string | void => {
+                            if (!value) {
+                                return 'Empty';
+                            }
+                        },
+                    },
+                    initialValue,
+                );
+            },
+            {
+                wrapper,
+            },
+        );
+
+        initialValue = 'Changed';
+
+        rerender();
+
+        const [fieldInputProps] = result.current;
+
+        expect(fieldInputProps.value).toEqual('Name');
+    });
+
+    it('triggers the initial value change while an error exists', async () => {
+        let initialValue = 'Name';
+
+        const { result, waitForNextUpdate, rerender } = renderHook(
+            () => {
+                return useCachedFormikField(
+                    {
+                        name: 'name',
+                        validate: (value: any): string | void => {
+                            if (!value) {
+                                return 'Empty';
+                            }
+                        },
+                    },
+                    initialValue,
+                    100,
+                );
+            },
+            {
+                wrapper,
+            },
+        );
+
+        const [, , fieldHelperProps] = result.current;
+
+        act(() => {
+            fieldHelperProps.setValue('');
+        });
+
+        await waitForNextUpdate();
+
+        initialValue = 'Changed';
+        rerender();
+
+        // act(() => {
+        //     fieldHelperProps.setValue('');
+        // });
+
+        expect(result.current[1].error).toEqual('Empty');
+    });
 });

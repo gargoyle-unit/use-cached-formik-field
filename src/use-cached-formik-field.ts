@@ -61,5 +61,15 @@ export const useCachedFormikField = <Val = any>(
         validate: validateField,
     });
 
+    React.useEffect(() => {
+        if (initialValue !== cachedValue.current) {
+            if (cachedError.current) {
+                fieldHelperProps.setValue(initialValue);
+            } else {
+                cachedValue.current = initialValue;
+            }
+        }
+    }, [initialValue]);
+
     return [fieldInputProps, fieldMetaProps, fieldHelperProps];
 };
