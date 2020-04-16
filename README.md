@@ -30,7 +30,7 @@ const InputComponent = (props) => {
         350,
     );
     
-    return (<input {...fieldProps />);
+    return (<input {...fieldProps} />);
 };
 
 export default Component;
