@@ -20,6 +20,7 @@ export const useCachedFormikField = <Val = any>(
 ): [FieldInputProps<Val>, FieldMetaProps<Val>, FieldHelperProps<Val>] => {
     const { validate, ...restProps } = props;
     const cachedValue = React.useRef<any>(initialValue);
+    const isInitialized = React.useRef<boolean>(false);
     const cachedError = React.useRef<string | null>(null);
 
     const debounced = React.useRef(
@@ -29,7 +30,7 @@ export const useCachedFormikField = <Val = any>(
     );
 
     const validateField = (value: string): string | void | Promise<string | void> => {
-        if (value === cachedValue.current) {
+        if (isInitialized.current && value === cachedValue.current) {
             if (!!cachedError.current) {
                 return cachedError.current;
             }
@@ -44,9 +45,11 @@ export const useCachedFormikField = <Val = any>(
                         .then(resultValue => {
                             cachedError.current = !!resultValue ? resultValue : null;
 
+                            isInitialized.current = true;
                             resolve(resultValue);
                         })
                         .catch(error => {
+                            isInitialized.current = true;
                             resolve(error);
                         });
                 });

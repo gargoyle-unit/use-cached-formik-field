@@ -25,6 +25,16 @@ const createWrapper = (): React.FC => {
 };
 
 describe('the behaviour of useCachedFormikField', () => {
+    jest.useRealTimers();
+
+    const waitForTimeout = (ms = 20) => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve();
+            }, ms);
+        });
+    };
+
     const wrapper = createWrapper();
 
     it('expects the value to equal the initial value', () => {
@@ -157,7 +167,7 @@ describe('the behaviour of useCachedFormikField', () => {
                         },
                     },
                     'Name',
-                    1000,
+                    10,
                 );
             },
             {
@@ -171,9 +181,47 @@ describe('the behaviour of useCachedFormikField', () => {
             fieldHelperProps.setValue('');
         });
 
-        await waitForNextUpdate();
+        await waitForTimeout();
 
         expect(result.current[0].value).toEqual('');
+    });
+
+    it('expects the cached value to be found without an error', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () => {
+                return useCachedFormikField(
+                    {
+                        name: 'name',
+                        validate: (value: any): string | void => {
+                            if (!value) {
+                                return 'Empty';
+                            }
+                        },
+                    },
+                    'Name',
+                    10,
+                );
+            },
+            {
+                wrapper,
+            },
+        );
+
+        const [, , fieldHelperProps] = result.current;
+
+        act(() => {
+            fieldHelperProps.setValue('new value');
+        });
+
+        await waitForTimeout();
+
+        act(() => {
+            fieldHelperProps.setValue('new value');
+        });
+
+        await waitForTimeout();
+
+        expect(result.current[1].value).toEqual('new value');
     });
 
     it('expects the cached error to be returned', async () => {
@@ -189,7 +237,7 @@ describe('the behaviour of useCachedFormikField', () => {
                         },
                     },
                     'Name',
-                    100,
+                    10,
                 );
             },
             {
@@ -203,7 +251,7 @@ describe('the behaviour of useCachedFormikField', () => {
             fieldHelperProps.setValue('');
         });
 
-        await waitForNextUpdate();
+        await waitForTimeout();
 
         act(() => {
             fieldHelperProps.setValue('');
@@ -223,7 +271,7 @@ describe('the behaviour of useCachedFormikField', () => {
                         },
                     },
                     'Name',
-                    1000,
+                    10,
                 );
             },
             {
@@ -237,7 +285,7 @@ describe('the behaviour of useCachedFormikField', () => {
             fieldHelperProps.setValue('');
         });
 
-        await waitForNextUpdate();
+        await waitForTimeout();
 
         expect(result.current[1].error).toEqual('Validation error');
     });
@@ -288,7 +336,7 @@ describe('the behaviour of useCachedFormikField', () => {
                         },
                     },
                     initialValue,
-                    100,
+                    10,
                 );
             },
             {
@@ -302,14 +350,11 @@ describe('the behaviour of useCachedFormikField', () => {
             fieldHelperProps.setValue('');
         });
 
-        await waitForNextUpdate();
+        await waitForTimeout();
 
         initialValue = 'Changed';
-        rerender();
 
-        // act(() => {
-        //     fieldHelperProps.setValue('');
-        // });
+        rerender();
 
         expect(result.current[1].error).toEqual('Empty');
     });
